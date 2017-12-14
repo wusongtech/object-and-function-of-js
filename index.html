@@ -73,10 +73,11 @@ const empty = {},
                     </p>
                 </section>
                 <section>
-                    <h2>函数</h2>
-                    <h3>Function</h3>
-                    <p>
-                    <pre><code class="hljs" data-trim contenteditable>
+                    <section>
+                        <h2>函数</h2>
+                        <h3>Function</h3>
+                        <p>
+                        <pre><code class="hljs" data-trim contenteditable>
 function person() {
     console.info('Hello World');
 }
@@ -93,7 +94,76 @@ const another = function () {
 };
 another();
                         </code></pre>
-                    </p>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>一等函数</h2>
+                        <p>即将函数用作数据值的能力——传递函数为参数、返回函数以及将函数复制给变量和对象属性。</p>
+                        <p>
+                        <pre><code class="hljs" data-trim contenteditable>
+const fibonacci = [1, 1, 2, 3, 5, 8, 13, 21];
+const double = x => x * 2;
+console.info(fibonacci.map(double));
+                        </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>匿名函数和简洁的 lambda 语法</h2>
+                        <p>x => x * 2 在 JavaScript 中是有效的函数表达式。简洁的 Lambda 让它更容易与高阶函数配合。</p>
+                        <p>
+                        <pre><code class="hljs" data-trim contenteditable>
+const fibonacci = [1, 1, 2, 3, 5, 8, 13, 21];
+const double = x => x * 2;
+console.info(fibonacci.map(double));
+                        </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>闭包</h2>
+                        <p>闭包是函数与其词法环境捆绑在一起。闭包是在函数创建时创建的。当一个函数被定义在另一个函数内部时，它可以访问外层函数中绑定的变量，即使在外层函数退出之后也是如此。</p>
+                        <p>
+                        <pre><code class="hljs" data-trim contenteditable>
+const closure = (function () {
+   let _name = 'John';
+   return {
+       getName() {
+          return _name;
+       }
+   };
+}());
+                        </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>高阶函数</h2>
+                        <p>高阶函数是以一个函数为实参，或者返回一个函数的函数。高级函数与一阶函数相反，一阶函数不能以一个函数为实参或者返回一个函数为输出的。</p>
+                        <p>Array.prototype 的 .map() 和 .filter() 的例子都以一个函数作为实参。二者都是高阶函数。</p>
+                        <p>
+                        <pre><code class="hljs" data-trim contenteditable>
+const result = [1,2,3,4,5,6,7,8,9].filter(x => x > 4).map(x => x * 2);
+console.info(result);
+                        </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>Reduce</h2>
+                        <p>Reduce 以一个 reducer 函数和一个初始值为参数，并返回一个累加值。</p>
+                        <p>
+                        <pre><code class="hljs" data-trim contenteditable>
+array.reduce(
+  reducer: (accumulator: Any, current: Any) => Any,
+  initialValue: Any
+) => accumulator: Any
+
+[1, 2, 3, 4, 5].reduce((acc, n) => acc + n, 0); // 15
+
+[1, 2, 3, 4, 5].reduce((acc, n) => {
+    console.info(`acc=${acc}, n=${n}`);
+    return acc + n;
+}, 0); // 15
+                        </code></pre>
+                        </p>
+                    </section>
                 </section>
                 <section>
                     <section>
@@ -140,7 +210,7 @@ function Bar() {
     //this.myvals.map((function () { console.log(this) }).bind(this));
 }
 
-var b = new Bar();
+const b = new Bar();
 //Bar();
                         </code></pre>
                         </p>
@@ -148,68 +218,65 @@ var b = new Bar();
                     </section>
                 </section>
                 <section>
-                    <h2>原型继承</h2>
-                    <p>
-                    <pre><code class="hljs" data-trim contenteditable>
-'use strict';
-class Foo {
-    constructor(a,b) {
-        this.x = a;
-        this.y = b;
+                    <section>
+                        <h2>原型继承</h2>
+                        <p>
+                        <pre><code class="hljs" data-trim contenteditable>
+function Person(name) {
+    this.name = name;
+}
+Person.prototype.sayHello = function () {
+    console.info('Hello, I\'m ' + this.name);
+};
+
+function Employee(name, salary) {
+    Person.call(this, name);
+    this.salary = salary;
+}
+Employee.prototype = new Person();
+Employee.prototype.showMeTheMoney = function() {
+    console.info(this.name + ' $ ' + this.salary);
+};
+
+var BillGates = new Person('Bill Gates');
+BillGates.sayHello();
+
+var SteveJobs = new Employee('Steve Jobs', 1234);
+SteveJobs.sayHello();
+SteveJobs.showMeTheMoney();
+                        </code></pre>
+                        </p>
+                    </section>
+                    <section>
+                        <h2>ES6 Class</h2>
+                        <p>
+                        <pre><code class="hljs" data-trim contenteditable>
+class Person {
+    constructor(name) {
+        this.name = name;
     }
-    gimmeXY() {
-        return this.x * this.y;
+    sayHello() {
+        console.info('Hello, I\'m ' + this.name);
     }
 }
-class Bar extends Foo {
-    constructor(a,b,c) {
-        super( a, b );
-        this.z = c;
+class Employee extends Person {
+    constructor(name, salary) {
+        super(name);
+        this.salary = salary;
     }
-    gimmeXYZ() {
-        return super.gimmeXY() * this.z;
+    showMeTheMoney() {
+        console.info(this.name + ' $ ' + this.salary);
     }
 }
-var b= new Bar(5,15,25);
-b.x; // 5
-b.y; // 15
-b.z; // 25
-b.gimmeXYZ(); // 1875
-                        </code></pre>
-                    </p>
-                    <p>More info: <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes" target="_blank">MDN Classes</a></p>
-                </section>
-                <section>
-                    <h2>高阶函数</h2>
-                    <p>
-                    <pre><code class="hljs" data-trim contenteditable>
-'use strict';
+var BillGates = new Person('Bill Gates');
+BillGates.sayHello();
 
-var x=2,y=3,
-    o={ x: x, y:y};
-var x=2,y=3,//Concise Properties
-    o={x,y};
-
-var x=2,y=3,
-    o={
-        x: function() {
-            // ..
-        },
-        y: function() {
-            // ..
-        }
-    };
-var x=2,y=3,//Concise Methods
-    o={
-        x() {
-            // ..
-        },
-        y() {
-            // ..
-        }
-    };
+var SteveJobs = new Employee('Steve Jobs', 1234);
+SteveJobs.sayHello();
+SteveJobs.showMeTheMoney();
                         </code></pre>
-                    </p>
+                        </p>
+                    </section>
                 </section>
                 <section>
                     <h2>参考资料地址</h2>
