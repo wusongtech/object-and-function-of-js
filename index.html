@@ -4,7 +4,7 @@
 	<head>
 		<meta charset="utf-8">
 
-		<title>ES6快速指南</title>
+		<title>对象和函数</title>
 
 		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
 		<meta name="author" content="Hakim El Hattab">
@@ -42,211 +42,94 @@
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
 				<section>
-					<h1>ES6快速指南</h1>
+					<h1>JavaScript的对象和函数</h1>
 				</section>
                 <section>
-                    <h2>磨刀不误砍柴工</h2>
-                    <p><img style="width: 270px;" src="images/Tesla-vs-Edison.jpeg"></p>
-                    <p>
-                        尼古拉·特斯拉：“如果爱迪生在一大堆草里找一根针，他一定立刻像一只蜜蜂那样，不辞辛苦的一根稻草一根稻草翻看看，直至找到他所要的东西为止。其实如果要是懂一点点理论稍微计算一下的话，那么他可以很轻松的省掉90%的劳动。”
-                    </p>
-                    <p>怎么寻找钢针？请用磁铁。</p>
-                </section>
-                <section>
-                    <h2>新特性</h2>
-                    <ol type="1">
-                        <li>块级作用域变量声明: let/const</li>
-                        <li>箭头函数：=></li>
-                        <li>不定参数、默认参数, 对象语法扩展，解构... </li>
-                        <li>模块</li>
-                    </ol>
-                    <p><a href="https://kangax.github.io/compat-table/es6/" target="_blank">Browser Compatibility</a></p>
-                </section>
-                <section>
-                    <h2>块级作用域变量声明</h2>
-                    <h3>Block-Scoped Declarations</h3>
-                    <p><code>let</code>/<code>const</code></p>
-                    <p>
-                        <pre><code class="hljs" data-trim contenteditable>
-var a=2;
-{
-    let a=3;
-    console.log( a );
-}
-console.log( a );
-                        </code></pre>
-                    </p>
-                    <p>
-                        <pre><code class="hljs" data-trim contenteditable>
-'use strict';
-{
-    const a=2;
-    console.log( a );
-    a=3;    //TypeError
-}
-                        </code></pre>
-                    </p>
-                    <p>More info:
-                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let" target="_blank">let statements</a>
-                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const" target="_blank">const statement</a>
-                    </p>
-                </section>
-                <section>
-                    <h2>模板字符串</h2>
-                    <h3>Template Literals</h3>
+                    <h2>对象字面量</h2>
+                    <h3>Object Literal</h3>
                     <p>
                     <pre><code class="hljs" data-trim contenteditable>
-'use strict';
-var text =
-`Now is the time for
-    all good men to come to the aid of their country!`;
-console.log( text );
+const FIELD_NAME = 'text';
+const empty = {},
+    person = {
+        name: 'John',
+        age: 30
+    },
+    speaker = {
+        [FIELD_NAME]: 'Hello World',
+        say() {
+            console.info(this.text);
+        }
+    };
+    person.gender = 'male';
+    console.info('Gender:', person.gender);
+    console.info('Gender:', person['gender']);
 
-var name = "Kyle";
-var greeting = `Hello ${name}!`;
-console.log( greeting ); // "Hello Kyle!"
-console.log( typeof greeting );// "string"
+    delete person.gender;
+    console.info('Gender:', person.gender);
 
-
-function foo(str) {
-    var name = "foo";
-    console.log( str );
-}
-function bar() {
-    var name = "bar";
-    foo( `Hello from ${name}!` );
-}
-var name = "global";
-bar(); // "Hello from bar!"
+    speaker.say();
                         </code></pre>
-                    </p>
-                    <p>More info: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/template_strings" target="_blank">MDN Template Strings</a></p>
-                </section>
-                <section>
-                    <h2>展开/不定参数</h2>
-                    <h3>Spread/Rest</h3>
-                    <p>
-                        <pre><code class="hljs" data-trim contenteditable>
-'use strict';
-var a = [2,3,4];
-var b=[1,...a,5];
-console.log( b ); // [1,2,3,4,5]
-
-function foo(x, y, ...z) {
-    console.log( x, y, z );
-}
-foo( 1, 2, 3, 4, 5 ); // 1 2 [3,4,5]
-                        </code></pre>
-                    </p>
-                    <p>More info:
-                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_operator" target="_blank">Spread Operator</a>
-                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters" target="_blank">Rest parameters</a>
                     </p>
                 </section>
                 <section>
-                    <h2>默认参数</h2>
-                    <h2>Default Parameter Values</h2>
-                    <p>
-                        <pre><code class="hljs" data-trim contenteditable>
-'use strict';
-function foo(x = 11, y = 31) {
-    console.log( x + y );
-}
-foo(); // 42
-                        </code></pre>
-                    </p>
-                    <p>More info:
-                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Default_parameters" target="_blank">Default parameters</a>
-                    </p>
-                </section>
-                <section>
-                    <h2>对象语法拓展</h2>
-                    <h3>Object Literal Extensions</h3>
+                    <h2>函数</h2>
+                    <h3>Function</h3>
                     <p>
                     <pre><code class="hljs" data-trim contenteditable>
-'use strict';
+function person() {
+    console.info('Hello World');
+}
+person.name = 'John';
+person.age = 30;
+person.gender = 'male';
 
-var x=2,y=3,
-    o={ x: x, y:y};
-var x=2,y=3,//Concise Properties
-    o={x,y};
+console.info('Gender:', person.gender);
 
-var x=2,y=3,
-    o={
-        x: function() {
-            // ..
-        },
-        y: function() {
-            // ..
-        }
-    };
-var x=2,y=3,//Concise Methods
-    o={
-        x() {
-            // ..
-        },
-        y() {
-            // ..
-        }
-    };
+person();
+
+const another = function () {
+    console.info('Another Function');
+};
+another();
                         </code></pre>
                     </p>
-                    <p>More info: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Grammar_and_types#Object_literals" target="_blank">MDN Grammer and types: Object literals</a></p>
                 </section>
                 <section>
                     <section>
-                        <h2>解构</h2>
-                        <h2>Destructuring</h2>
+                        <h2>this</h2>
                         <p>
                         <pre><code class="hljs" data-trim contenteditable>
-'use strict';
-
-var [a,b,c]= [1,2,3];
-console.log( a, b, c ); // 1 2 3
-var {x:x,y:y,z:z} = { x: 4, y: 5, z:6 };
-console.log( x, y, z ); // 4 5 6
-
-function foo({x,y}){
-    console.log( x, y );
+function WhoAmI() {
+    console.info('I\'m ' + this.name + ' of ' + typeof(this));
 }
-foo( { y: 1, x: 2 } );// 2 1
-foo( { y: 42 } );// undefined 42
-foo( {} );// undefined undefined
+WhoAmI();
+
+var BillGates = {name: 'Bill Gates', WhoAmI};
+BillGates.WhoAmI();
+
+var SteveJobs = {name: 'Steve Jobs', WhoAmI};
+SteveJobs.WhoAmI();
+
+WhoAmI.call(BillGates);
+WhoAmI.call(SteveJobs);
+
+BillGates.WhoAmI.call(SteveJobs);
+SteveJobs.WhoAmI.call(BillGates);
+
+WhoAmI.WhoAmI = WhoAmI;
+WhoAmI.name = 'WhoAmI';
+WhoAmI.WhoAmI();
+
+({name: 'nobody', WhoAmI}).WhoAmI();
                         </code></pre>
                         </p>
-                        <p>More info: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment" target="_blank">MDN Destructuring assignment</a></p>
                     </section>
                     <section>
-                        <h3>不引入新的变量，互换两个变量的值</h3>
+                        <h2>箭头函数</h2>
+                        <h2>Arrow Functions</h2>
                         <p>
                         <pre><code class="hljs" data-trim contenteditable>
-var a = 1, b = 2;
-console.info(`a=${a}, b=${b}`);
-[a, b] = [b, a];
-console.info(`a=${a}, b=${b}`);
-
-var a = 1, b = 2;
-console.info(`a=${a}, b=${b}`);
-({a, b} = {a: b, b: a});
-console.info(`a=${a}, b=${b}`);
-                        </code></pre>
-                        </p>
-                    </section>
-                </section>
-                <section>
-                    <h2>箭头函数</h2>
-                    <h2>Arrow Functions</h2>
-                    <p>
-                        <pre><code class="hljs" data-trim contenteditable>
-'use strict';
-function foo(x,y) { return x + y;}
-// versus
-var foo=(x,y)=>x+y;
-
-var a = [1,2,3,4,5];
-a=a.map(v=>v*2);
-console.log( a ); // [2,4,6,8,10]
-
 function Bar() {
     this.myvals = [1,2,3,4,5];
     // 'this' refers to the Bar instance when run inside an ES6 transpiler
@@ -258,15 +141,16 @@ function Bar() {
 }
 
 var b = new Bar();
+//Bar();
                         </code></pre>
-                    </p>
-                    <p>More info: <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">MDN Arrow Functions</a></p>
+                        </p>
+                        <p>More info: <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank">MDN Arrow Functions</a></p>
+                    </section>
                 </section>
                 <section>
-                    <h2>类</h2>
-                    <h3>Classes</h3>
+                    <h2>原型继承</h2>
                     <p>
-                        <pre><code class="hljs" data-trim contenteditable>
+                    <pre><code class="hljs" data-trim contenteditable>
 'use strict';
 class Foo {
     constructor(a,b) {
@@ -296,33 +180,49 @@ b.gimmeXYZ(); // 1875
                     <p>More info: <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Classes" target="_blank">MDN Classes</a></p>
                 </section>
                 <section>
-                    <h2>模块</h2>
-                    <h2>Modules</h2>
-                    <p>ES6 modules are file-based, meaning one module per file. </p>
-                    <p>ES6的模块是基于文件的，也就是说单独一个文件就是一个单独的模块。 </p>
-                        <pre><code class="hljs" data-trim contenteditable>
+                    <h2>高阶函数</h2>
+                    <p>
+                    <pre><code class="hljs" data-trim contenteditable>
 'use strict';
-export default function foo() { .. }
-export function bar() { .. }
-export function baz() { .. }
 
-import FOOFN, { bar, baz as BAZ } from "foo";
-FOOFN();
-bar();
-BAZ();
+var x=2,y=3,
+    o={ x: x, y:y};
+var x=2,y=3,//Concise Properties
+    o={x,y};
+
+var x=2,y=3,
+    o={
+        x: function() {
+            // ..
+        },
+        y: function() {
+            // ..
+        }
+    };
+var x=2,y=3,//Concise Methods
+    o={
+        x() {
+            // ..
+        },
+        y() {
+            // ..
+        }
+    };
                         </code></pre>
-                    <p>More info:
-                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import" target="_blank">import statement</a>
-                        <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/export" target="_blank">export statement</a>
                     </p>
                 </section>
                 <section>
                     <h2>参考资料地址</h2>
                     <ul>
-                        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference" target="_blank">MDN JavaScript Reference</a></li>
-                        <li><a href="docs/ES6-in-depth.pdf" target="_blank">ECMAScript6 深入浅出</a></li>
-                        <li><a href="http://es6.ruanyifeng.com/" target="_blank">ECMAScript 6 入门</a></li>
-                        <li><a href="https://github.com/getify/You-Dont-Know-JS/" target="_blank">You Don't Know JS: ES6 & Beyond</a></li>
+                        <li><a href="https://mp.weixin.qq.com/s/-M91iRy8C46xGoLEUBZHAw" target="_blank">学了这么多年JS，你还不是弄不懂“this”? (上篇)</a></li>
+                        <li><a href="https://mp.weixin.qq.com/s/v69v7hPJ8fvMGO26lrZYXg" target="_blank">学了这么多年JS，你还不是弄不懂“this”？（中篇）</a></li>
+                        <li><a href="https://mp.weixin.qq.com/s/CCiPCRJEBy1z0pVnzXS-bw" target="_blank">学了这么多年JS，你还不是弄不懂“this”？（下篇）</a></li>
+                        <li><a href="https://mp.weixin.qq.com/s/0H5JDxA0bqtr2wsTWiRJYw" target="_blank">满血复活的函数式编程（组合软件）</a></li>
+                        <li><a href="https://mp.weixin.qq.com/s/j4xLJHpLib7nvdfa_skATA" target="_blank">为什么要在 JavaScript 中学习函数式编程？（组合软件）</a></li>
+                        <li><a href="https://mp.weixin.qq.com/s/zG_hYKboBGk27eTZyx6Ijg" target="_blank">函数式程序员的 JavaScript 介绍（组合软件）</a></li>
+                        <li><a href="https://mp.weixin.qq.com/s/v9erUaAnfgk5jggqTeFAvw" target="_blank">高阶函数 (组合软件)</a></li>
+                        <li><a href="https://mp.weixin.qq.com/s/Ja0u2lxKbu0HXIKtjKRcKg" target="_blank">Reduce（组合函数）</a></li>
+                        <li><a href="https://mp.weixin.qq.com/s/XyKBeXdXRDcXKYwFgFzsOw" target="_blank">函子和范畴（组合软件）</a></li>
                     </ul>
                 </section>
 			</div>
