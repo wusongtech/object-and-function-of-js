@@ -1,0 +1,1 @@
+# object-and-function-of-js
