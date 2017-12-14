@@ -196,6 +196,22 @@ WhoAmI.WhoAmI();
                         </p>
                     </section>
                     <section>
+                        <h2>陷阱:从object中分离方法</h2>
+                        <p>
+                        <pre><code class="hljs" data-trim contenteditable>
+var myCat = {
+    name: 'Hello Kitty',
+    say() {
+        console.info(`${this.name} says MiaoMiao `);
+    }
+};
+
+setTimeout(myCat.say, 1000);
+setTimeout(myCat.say.bind(myCat), 1000);
+                        </code></pre>
+                        </p>
+                    </section>
+                    <section>
                         <h2>箭头函数</h2>
                         <h2>Arrow Functions</h2>
                         <p>
